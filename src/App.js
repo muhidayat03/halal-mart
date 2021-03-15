@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import "./App.css";
 
-import { Title, MediumTitle, Paragraph } from "./components/Typography";
+import { Title, Paragraph } from "./components/Typography";
 import Header from "./components/Header";
 import { Bag, House, People } from "react-bootstrap-icons";
 import { Col, Row } from "./components/Grid";
