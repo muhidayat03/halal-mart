@@ -193,6 +193,7 @@ const FooterItemName = styled(Title)`
 
 const ProductCard = styled.div`
   width: 100%;
+  max-width: 240px;
   background-color: white;
   border-radius: 10px;
   box-shadow: rgb(49 53 59 / 12%) 0px 1px 6px 0px;
