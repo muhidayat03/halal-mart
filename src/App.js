@@ -1,16 +1,88 @@
 import styled from "styled-components";
 import "./App.css";
+import React, { useState } from "react";
 
 import { Title, Paragraph } from "./components/Typography";
 import Header from "./components/Header";
-import { Bag, House, People } from "react-bootstrap-icons";
+import {
+  Bag,
+  House,
+  People,
+  PlusCircle,
+  DashCircle,
+} from "react-bootstrap-icons";
 import { Col, Row } from "./components/Grid";
-import ProductImage from "./assets/produk.png";
 
 function App() {
+  const [product, setProduct] = useState([
+    { id: 1, item: 0, name: "Diabextrac", price: 130000 },
+    { id: 2, item: 0, name: "Gamat Kapsul", price: 130000 },
+    { id: 3, item: 0, name: "Ginextrac", price: 90000 },
+    { id: 4, item: 0, name: "Habbassauda", price: 50000 },
+    { id: 5, item: 0, name: "Harumi", price: 70000 },
+    { id: 6, item: 0, name: "Kelosin", price: 90000 },
+    { id: 7, item: 0, name: "Langsingin", price: 120000 },
+    { id: 8, item: 0, name: "Laurik", price: 65000 },
+    { id: 9, item: 0, name: "Magafit", price: 900000 },
+    { id: 10, item: 0, name: "Mengkudu", price: 80000 },
+    { id: 11, item: 0, name: "Habbat Softgel", price: 95000 },
+    { id: 12, item: 0, name: "Minyak Herba", price: 50000 },
+  ]);
+
+  const addItem = (id) => {
+    const productIndex = product.findIndex((item) => item.id === id);
+    const productTemp = [...product];
+    productTemp[productIndex].item++;
+    setProduct(productTemp);
+  };
+
+  const removeItem = (id) => {
+    const productIndex = product.findIndex((item) => item.id === id);
+    const productTemp = [...product];
+    if (productTemp[productIndex].item >= 1) {
+      productTemp[productIndex].item--;
+      setProduct(productTemp);
+    }
+  };
+
+  const cart = product.filter(({ item }) => item >= 1);
+
+  const ProductItem = ({ name, item, id, price }) => {
+    return (
+      <Col lg={4} md={3} sm={2} xs={2} padding="10px">
+        <ProductCard>
+          <ProductImageWrapper
+            src={process.env.PUBLIC_URL + "/image/" + id + ".png"}
+          ></ProductImageWrapper>
+          <ProductDesc>
+            <ProductTitle>{name}</ProductTitle>
+            <ProductPrice>Rp {price}</ProductPrice>
+            <ProductTotal>
+              <div>
+                <DashCircle
+                  size={24}
+                  color="#646464"
+                  onClick={() => removeItem(id)}
+                />
+              </div>
+              <div style={{ fontSize: 20, padding: "0px 20px" }}>{item}</div>
+              <div>
+                <PlusCircle
+                  size={24}
+                  color="#646464"
+                  onClick={() => addItem(id)}
+                />
+              </div>
+            </ProductTotal>
+          </ProductDesc>
+        </ProductCard>
+      </Col>
+    );
+  };
+
   return (
     <>
-      <Header></Header>
+      <Header cart={cart} />
 
       <Section>
         <div
@@ -18,20 +90,9 @@ function App() {
         >
           <Title>Produk</Title>
           <Row>
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
-            <ProductItem />
+            {product.map(({ item, name, id, price }, i) => (
+              <ProductItem name={name} item={item} id={id} price={price} />
+            ))}
           </Row>
         </div>
       </Section>
@@ -105,17 +166,30 @@ const FooterItemName = styled(Title)`
   font-weight: 400;
 `;
 
-const ProductItem = () => (
-  <Col lg={4} md={3} sm={2} xs={2} padding="10px">
-    <ProductCard>
-      <ProductImageWrapper src={ProductImage}></ProductImageWrapper>
-      <ProductDesc>
-        <ProductTitle>Kopi Tujuh Elemen</ProductTitle>
-        <ProductPrice>Rp 100.000</ProductPrice>
-      </ProductDesc>
-    </ProductCard>
-  </Col>
-);
+// const ProductItem = ({ name, item, id }) => (
+//   <Col lg={4} md={3} sm={2} xs={2} padding="10px">
+//     <ProductCard>
+//       <ProductImageWrapper src={ProductImage}></ProductImageWrapper>
+//       <ProductDesc>
+//         <ProductTitle>Kopi Tujuh Elemen</ProductTitle>
+//         <ProductPrice>Rp 100.000</ProductPrice>
+//         <ProductTotal>
+//           <DashCircle
+//             size={24}
+//             color="#646464"
+//             onClick={(index) => addItem(id)}
+//           />
+//           <div style={{ fontSize: 20, padding: "0px 20px" }}>{item}</div>
+//           <PlusCircle
+//             size={24}
+//             color="#646464"
+//             onClick={(index) => removeItem(index)}
+//           />
+//         </ProductTotal>
+//       </ProductDesc>
+//     </ProductCard>
+//   </Col>
+// );
 
 const ProductCard = styled.div`
   width: 100%;
@@ -125,23 +199,29 @@ const ProductCard = styled.div`
 `;
 
 const ProductDesc = styled.div`
-  padding: 12px 14px;
+  padding: 12px 18px;
   /* background-color: red; */
+`;
+const ProductTotal = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 14px 20px;
 `;
 
 const ProductTitle = styled(Paragraph)`
   margin: 0;
   font-size: 14px;
+  text-align: center;
 `;
 const ProductPrice = styled(Title)`
   color: black;
+  text-align: center;
 `;
 
 const ProductImageWrapper = styled.img`
   display: block;
-  width: 100%;
-  max-width: 200px;
-  height: 140px;
+  max-width: 160px;
+  height: 160px;
   margin: auto;
   object-fit: cover;
 `;
