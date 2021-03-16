@@ -39,7 +39,7 @@ const Header = ({ cart }) => {
             </StyledLink>
           </Menu>
           <a
-            href={`https://api.whatsapp.com/send/?phone=6289637500114&text=${url}&app_absent=0`}
+            href={`https://api.whatsapp.com/send/?phone=6281235070510&text=${url}&app_absent=0`}
             target="blank"
           >
             <div style={{ position: "relative" }}>
